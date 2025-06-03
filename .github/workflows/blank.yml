@@ -1,19 +1,20 @@
-name: Вложенные matrix параметры
-on: 
-    push:
+name: Build
+
+on:
+  push:
+
 jobs:
-  matrix-fail-fast:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true  # По умолчанию, можно не указывать
-      matrix:
-        test_case: [1, 2, 3, 4]
     steps:
-      - name: "Run test case ${{ matrix.test_case }}"
-        run: |
-          if [ ${{ matrix.test_case }} -eq 2 ]; then
-            echo "This test fails!"
-            exit 1
-          else
-            echo "Test ${{ matrix.test_case }} passed"
-          fi
+    - name: Checkout sources
+      uses: actions/checkout@v4
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: 17
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+    - name: Build with Gradle
+      run: ./gradlew build
