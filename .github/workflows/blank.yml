@@ -1,20 +1,19 @@
-name: Build
+name: Test GitHub Actions Workflow  # Название workflow (отображается в Actions tab)
+run-name: ${{ github.actor }} is testing GitHub Actions 🚀  # Динамическое описание запуска
 
 on:
   push:
+    branches: [ main, master ]  # Триггер на push в main/master ветку
+  pull_request:
+    branches: [ main, master ]  # Триггер на PR в main/master ветку
+  workflow_dispatch:  # Позволяет запускать workflow вручную из UI
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test-job:
+    name: Test Job  # Название job внутри workflow
+    runs-on: ubuntu-latest  # Запуск на последней Ubuntu
+
     steps:
-    - name: Checkout sources
-      uses: actions/checkout@v4
-    - name: Setup Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: 17
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-    - name: Build with Gradle
-      run: ./gradlew build
+
+      - name: Print a greeting  # Шаг 2: Простое сообщение
+        run: echo "Hello, ${{ github.actor }}! GitHub Actions is working! ✅"
