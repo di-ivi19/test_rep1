@@ -1,4 +1,4 @@
-name: Test GitHub Actions Workflow  # Название workflow (отображается в Actions tab)
+name: Test GitHub Actions Workflow 2 # Название workflow (отображается в Actions tab)
 run-name: ${{ github.actor }} is testing GitHub Actions 🚀  # Динамическое описание запуска
 
 on:
