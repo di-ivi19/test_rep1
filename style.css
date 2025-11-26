@@ -1,72 +1,325 @@
-// style.jss — экспорт объекта со стилями (пример для использования в React/Vue/Vanilla с runtime)
-// Примечание: в статическом HTML этот файл не применится автоматически, используйте style.css.
-export const styles = {
-  ':root': {
-    '--bg': '#f8fafc',
-    '--card': '#ffffff',
-    '--accent': '#06b6d4',
-    '--muted': '#64748b',
-    '--radius': '12px',
-  },
-  'body': {
-    margin: 0,
-    fontFamily: "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
-    background: 'var(--bg)',
-    color: '#0f172a',
-  },
-  '.container': {
-    maxWidth: '1100px',
-    margin: '0 auto',
-    padding: '20px',
-  },
-  '.site-header': {
-    background: '#fff',
-    borderBottom: '1px solid rgba(15,23,42,0.04)'
-  },
-  '.header-inner': {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '16px'
-  },
-  '.brand': {
-    fontWeight: 700,
-    fontSize: '20px'
-  },
-  '.nav a': {
-    margin: '0 10px',
-    color: '#0f172a',
-    textDecoration: 'none'
-  },
-  '.btn': {
-    padding: '10px 14px',
-    borderRadius: '10px',
-    border: '1px solid rgba(15,23,42,0.06)',
-    cursor: 'pointer',
-    fontWeight: 600
-  },
-  '.btn.primary': {
-    background: 'linear-gradient(90deg,var(--accent),#2dd4bf)',
-    color: '#fff',
-    border: 'none'
-  },
-  '.main-grid': {
-    display: 'grid',
-    gridTemplateColumns: '1fr 320px',
-    gap: '24px',
-    alignItems: 'start',
-    paddingTop: '20px'
-  },
-  '.signup-card': {
-    background: 'var(--card)',
-    padding: '18px',
-    borderRadius: 'var(--radius)',
-    boxShadow: '0 8px 18px rgba(2,6,23,0.06)'
-  },
-  '.features': {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3,1fr)',
-    gap: '16px',
-    margin: '28px 0'
-  }
-};
+/* Reset / base ----------------------------------------------------------- */
+:root{
+  --bg:#f7f8fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#2563eb; /* синий акцент */
+  --accent-2:#06b6d4; /* вторичный акцент */
+  --danger:#ef4444;
+  --shadow: 0 6px 18px rgba(16,24,40,0.06);
+  --glass: rgba(255,255,255,0.6);
+  --radius:12px;
+  --radius-sm:8px;
+  --max-width:1100px;
+  --content-padding:24px;
+  --text:#0f172a;
+  --border: #e6e9ef;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color-scheme: light;
+}
+
+/* Global resets */
+*{box-sizing:border-box}
+html,body{
+  height:100%;
+  margin:0;
+  background:linear-gradient(180deg, #fbfdff 0%, var(--bg) 100%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-size:16px;
+  line-height:1.45;
+}
+img{max-width:100%;display:block}
+
+/* Layout wrapper -------------------------------------------------------- */
+.container{
+  max-width:var(--max-width);
+  margin:28px auto;
+  padding:0 var(--content-padding);
+}
+
+/* Header --------------------------------------------------------------- */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:18px 0;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  text-decoration:none;
+  color:var(--text);
+}
+.brand .logo{
+  width:48px;
+  height:48px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  box-shadow: 0 6px 16px rgba(37,99,235,0.16), inset 0 -6px 18px rgba(255,255,255,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:700;
+  font-size:18px;
+  flex:0 0 48px;
+}
+.brand h1{
+  margin:0;
+  font-size:18px;
+  letter-spacing:0.1px;
+}
+.nav{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-left:auto;
+}
+.nav a{
+  padding:8px 12px;
+  border-radius:8px;
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:600;
+  transition:all .18s ease;
+}
+.nav a:hover{ color:var(--text); background:rgba(15,23,42,0.04) }
+.cta{
+  padding:9px 14px;
+  background:var(--accent);
+  color:white;
+  border-radius:10px;
+  box-shadow: 0 8px 20px rgba(37,99,235,0.12);
+  text-decoration:none;
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* Main grid ------------------------------------------------------------ */
+.main{
+  display:grid;
+  grid-template-columns: 1fr 340px;
+  gap:22px;
+  align-items:start;
+  margin-top:18px;
+}
+
+/* Left column / content ------------------------------------------------ */
+.content{
+  background:transparent;
+}
+
+/* Hero / intro card --------------------------------------------------- */
+.hero{
+  background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.85));
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+  margin-bottom:18px;
+}
+.hero h2{
+  margin:0 0 8px 0;
+  font-size:22px;
+}
+.hero p{
+  margin:0;
+  color:var(--muted);
+}
+
+/* Programs grid -------------------------------------------------------- */
+.programs{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  gap:14px;
+  margin-top:18px;
+}
+.program{
+  background:var(--card);
+  border-radius:12px;
+  padding:14px;
+  border:1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(11,15,29,0.04);
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.program .thumb{
+  width:66px;
+  height:66px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#f0f7ff,#eef9fa);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:var(--accent);
+  flex:0 0 66px;
+}
+.program .meta{
+  flex:1;
+}
+.program .meta h3{
+  margin:0 0 6px 0;
+  font-size:16px;
+}
+.program .meta p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+.program .price{
+  margin-top:10px;
+  font-weight:700;
+  color:var(--accent);
+  font-size:15px;
+}
+
+/* Right column / card -------------------------------------------------- */
+.sidecard{
+  position:sticky;
+  top:24px;
+  align-self:start;
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+  border-radius:var(--radius);
+  padding:18px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+.sidecard h4{ margin:0 0 8px 0 }
+.sidecard p{ margin:0 0 12px 0; color:var(--muted) }
+
+/* Forms --------------------------------------------------------------- */
+.form-row{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+}
+.input, .select, .textarea{
+  width:100%;
+  display:block;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:white;
+  font-size:15px;
+  color:var(--text);
+  outline:none;
+  transition:box-shadow .12s ease, border-color .12s ease;
+}
+.input:focus, .select:focus, .textarea:focus{
+  border-color:rgba(37,99,235,0.9);
+  box-shadow:0 6px 18px rgba(37,99,235,0.06);
+}
+.input[aria-invalid="true"], .select[aria-invalid="true"], .textarea[aria-invalid="true"]{
+  border-color:var(--danger);
+}
+.btn{
+  display:inline-block;
+  padding:10px 12px;
+  border-radius:10px;
+  background:var(--accent);
+  color:#fff;
+  text-decoration:none;
+  text-align:center;
+  border:none;
+  cursor:pointer;
+  font-weight:700;
+}
+.btn.secondary{
+  background:transparent;
+  color:var(--accent);
+  border:1px solid rgba(37,99,235,0.12);
+}
+
+/* Small helper styles -------------------------------------------------- */
+.small{ font-size:13px; color:var(--muted) }
+.kv{ display:flex; gap:10px; align-items:center }
+.kv b{ font-weight:700; color:var(--text) }
+
+/* Auth / signup compact card ------------------------------------------- */
+.auth-box{
+  margin-top:12px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.94));
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+}
+.tabs{
+  display:flex;
+  gap:6px;
+  margin-bottom:12px;
+}
+.tab{
+  padding:8px 10px;
+  border-radius:8px;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  font-weight:600;
+}
+.tab.active{
+  background:linear-gradient(90deg, rgba(37,99,235,0.08), rgba(6,182,212,0.06));
+  color:var(--accent);
+  box-shadow: inset 0 -2px 0 rgba(37,99,235,0.06);
+}
+
+/* Notice / message ----------------------------------------------------- */
+.notice{
+  background:#fff8e6;
+  border:1px solid rgba(250,204,21,0.18);
+  color:#92400e;
+  padding:10px 12px;
+  border-radius:10px;
+  font-size:14px;
+  margin-top:10px;
+}
+
+/* Footer --------------------------------------------------------------- */
+.footer{
+  margin-top:28px;
+  padding:18px 0;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-size:14px;
+}
+
+/* Utilities ------------------------------------------------------------ */
+.row{ display:flex; gap:12px; align-items:center }
+.center{ display:flex; align-items:center; justify-content:center }
+
+/* Responsive ----------------------------------------------------------- */
+@media (max-width:1024px){
+  .main{ grid-template-columns: 1fr 320px; gap:18px }
+  .container{ padding:0 20px }
+}
+@media (max-width:880px){
+  .main{ grid-template-columns: 1fr; }
+  .sidecard{ position:relative; top:unset }
+  .programs{ grid-template-columns: 1fr 1fr }
+  .container{ margin:18px auto }
+}
+@media (max-width:520px){
+  :root{ font-size:15px }
+  .programs{ grid-template-columns: 1fr }
+  .brand h1{ font-size:16px }
+  .nav{ display:none } /* hamburger could be added separately */
+  .header{ gap:12px }
+  .container{ padding:0 14px }
+  .hero{ padding:16px }
+  .sidecard{ padding:14px }
+  .program{ padding:12px }
+}
+
+/* Accessibility tweaks ------------------------------------------------- */
+.input[disabled], .btn[disabled]{ opacity:.6; cursor:not-allowed }
+a[role="button"]{ cursor:pointer }
