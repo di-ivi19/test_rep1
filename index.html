@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Обучение английскому с 0 — Визитка</title>
+
+  <!-- Подключение основного css (ваш файл style.css, содержащий визуальные стили) -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Подключение файла стилей в формате JSS (если используете сборщик/модульную систему) -->
+  <!-- В обычном статическом сайте этот файл не применяется автоматически -->
+  <script type="module" src="style.jss"></script>
+
+  <!-- Небольшой встроенный скрипт для загрузки site.json и подстановки данных -->
+  <script>
+    async function loadSiteConfig() {
+      try {
+        const resp = await fetch('site.json');
+        if (!resp.ok) throw new Error('Не удалось загрузить site.json');
+        const cfg = await resp.json();
+
+        // Применяем заголовок и контакт в шапке
+        document.title = cfg.title || document.title;
+        const brand = document.getElementById('site-brand');
+        if (brand) brand.textContent = cfg.title;
+
+        const phoneEl = document.getElementById('site-phone');
+        if (phoneEl) phoneEl.textContent = cfg.contact.phone;
+
+        const emailEl = document.getElementById('site-email');
+        if (emailEl) emailEl.textContent = cfg.contact.email;
+
+        // Динамическое создание меню в навигации
+        const nav = document.getElementById('main-nav');
+        if (nav && Array.isArray(cfg.pages)) {
+          nav.innerHTML = ''; // очистим
+          cfg.pages.forEach(p => {
+            const a = document.createElement('a');
+            a.href = p.url;
+            a.textContent = p.title;
+            nav.appendChild(a);
+          });
+        }
+
+        // Заполнение секции программ
+        const programsWrap = document.getElementById('programs');
+        if (programsWrap && Array.isArray(cfg.programs)) {
+          programsWrap.innerHTML = '';
+          cfg.programs.forEach(pr => {
+            const card = document.createElement('div');
+            card.className = 'program-card';
+            card.innerHTML = `
+              <h4>${pr.title}</h4>
+              <p class="muted">${pr.subtitle}</p>
+              <p>${pr.description}</p>
+              <div class="price">${pr.price}</div>
+              <a class="btn primary" href="${pr.cta_link}">${pr.cta_text}</a>
+            `;
+            programsWrap.appendChild(card);
+          });
+        }
+
+      } catch (err) {
+        console.error('Ошибка при загрузке конфигурации:', err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadSiteConfig);
+  </script>
+</head>
+<body>
+  <!-- ШАПКА / NAV -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand" id="site-brand">Английский с 0</div>
+      <nav id="main-nav" class="nav">
+        <!-- Меню заполняется динамически из site.json -->
+        <a href="index.html">Главная</a>
+        <a href="programs.html">Программы</a>
+        <a href="about.html">О преподавателе</a>
+        <a href="contacts.html">Контакты</a>
+      </nav>
+
+      <div class="contact">
+        <a href="tel:+000000000" id="site-phone">+0 (000) 000-00-00</a>
+        <a href="mailto:hello@example.com" id="site-email">hello@example.com</a>
+        <!-- Кнопка открыть модальное окно записи -->
+        <button class="btn primary" id="open-signup">Записаться</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ГЛАВНЫЙ КОНТЕНТ -->
+  <main class="container main-grid">
+    <!-- ЛЕВАЯ КОЛОНКА: Описание курса -->
+    <section class="hero">
+      <h1>Обучение английскому с нуля</h1>
+      <p class="lead">Индивидуальные и групповые занятия, гибкий график, проверенная методика.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="programs.html">Посмотреть программы</a>
+        <a class="btn" href="about.html">О преподавателе</a>
+      </div>
+
+      <!-- Блок преимуществ (статично, можно заменить на динамику из site.json) -->
+      <div class="features">
+        <div class="feature">
+          <h4>Понятные объяснения</h4>
+          <p>Пошаговая методика для абсолютных новичков.</p>
+        </div>
+        <div class="feature">
+          <h4>Практика речи</h4>
+          <p>Много говорения в безопасной атмосфере.</p>
+        </div>
+        <div class="feature">
+          <h4>Результат через 3 месяца</h4>
+          <p>Чёткая программа с измеримыми целями.</p>
+        </div>
+      </div>
+
+      <!-- Секция программ (наполняется из site.json) -->
+      <h2>Программы</h2>
+      <div id="programs" class="programs">
+        <!-- Программные карточки будут созданы скриптом из site.json -->
+      </div>
+    </section>
+
+    <!-- ПРАВАЯ КОЛОНКА: Карточка записи на пробный урок -->
+    <aside class="signup-card" aria-label="Записаться на пробный урок">
+      <h3>Запись на пробный урок</h3>
+      <p class="price">Первый урок бесплатно</p>
+
+      <form id="signup-form">
+        <div class="field">
+          <label for="name">Имя</label>
+          <input id="name" name="name" type="text" required placeholder="Ваше имя">
+        </div>
+
+        <div class="field">
+          <label for="phone">Телефон</label>
+          <input id="phone" name="phone" type="tel" required placeholder="+7 (___) ___-__-__">
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="email@example.com">
+        </div>
+
+        <div class="field">
+          <label for="program-select">Выберите программу</label>
+          <select id="program-select" name="program">
+            <option value="">— Выберите —</option>
+            <option value="starter">Английский с 0</option>
+            <option value="intensive">Интенсив</option>
+            <option value="conversation">Разговорный</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="time">Удобное время</label>
+          <input id="time" name="time" type="text" placeholder="Утро / День / Вечер">
+        </div>
+
+        <button type="submit" class="btn primary">Отправить заявку</button>
+
+        <p id="signup-result" class="muted" style="margin-top:8px"></p>
+      </form>
+
+      <hr>
+
+      <h4>Войти / Зарегистрироваться</h4>
+      <form id="auth-form">
+        <div class="field">
+          <label for="auth-email">Email</label>
+          <input id="auth-email" name="auth-email" type="email" required placeholder="email@example.com">
+        </div>
+        <div class="field">
+          <label for="auth-password">Пароль</label>
+          <input id="auth-password" name="auth-password" type="password" required placeholder="••••••••">
+        </div>
+        <div style="display:flex;gap:8px">
+          <button type="submit" class="btn primary">Войти</button>
+          <button type="button" id="switch-register" class="btn">Зарегистрироваться</button>
+        </div>
+        <p id="auth-result" class="muted" style="margin-top:8px"></p>
+      </form>
+    </aside>
+  </main>
+
+  <!-- ФУТЕР -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="site-year"></span> <span id="site-brand-footer">Английский с 0</span> — все права защищены.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Простая обработка форм: отправка данных локально (без сервера).
+    document.getElementById('signup-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const data = {
+        name: this.name.value.trim(),
+        phone: this.phone.value.trim(),
+        email: this.email.value.trim(),
+        program: this.program.value,
+        time: this.time.value.trim(),
+        created: new Date().toISOString()
+      };
+      // В реальном проекте — отправлять на сервер через fetch POST.
+      console.log('Заявка на пробный урок:', data);
+      document.getElementById('signup-result').textContent = 'Заявка отправлена! Мы свяжемся с вами в ближайшее время.';
+      this.reset();
+    });
+
+    document.getElementById('auth-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = this['auth-email'].value.trim();
+      const pwd = this['auth-password'].value;
+      // Пример локальной проверки (в реальном проекте — отправка на сервер).
+      console.log('Попытка входа:', email);
+      document.getElementById('auth-result').textContent = 'Вход выполнен (демо).';
+      this.reset();
+    });
+
+    document.getElementById('switch-register').addEventListener('click', function(){
+      alert('Здесь можно реализовать логику регистрации: открыть форму регистрации или перенаправить на страницу регистрации.');
+    });
+
+    // Подписка на кнопку вызвать форму
+    document.getElementById('open-signup').addEventListener('click', function(){
+      // Прокрутить к форме в правой колонке
+      document.querySelector('.signup-card').scrollIntoView({behavior: 'smooth'});
+    });
+
+    // Подставим год в футер
+    document.getElementById('site-year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
